@@ -11,7 +11,15 @@ const {
   getComment,
   updateComment,
   deleteComment,
+  getAllComments,
 } = require("@Controllers/Comment");
+
+router.get(
+  "/getAll",
+  validateData(idValidationSchema, "query"),
+  passportAuth("jwt-access", { session: false }),
+  getAllComments
+);
 
 router.post(
   "/create",

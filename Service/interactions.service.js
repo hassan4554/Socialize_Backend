@@ -1,11 +1,18 @@
 const db = require("@Models");
 const { DB_TABLES } = require("@Constants");
 
-const findOrCreateFriend = (userId, friendId) => {
-  return db[DB_TABLES.Friend].findOrCreate({
+const findOrCreateFriend = async (userId, friendId, options = {}) => {
+  const [user, created] = await db[DB_TABLES.Friend].findOrCreate({
     where: { userId, friendId },
-    default: { userId, friendId },
+    defaults: { userId, friendId },
+    ...options,
   });
+  if (user && !created && user.deletedAt) {
+    await user.restore();
+    return [user, true];
+  }
+
+  return [user, created];
 };
 
 const deleteSingleFriend = (userId, friendId) => {

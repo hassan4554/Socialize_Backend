@@ -49,7 +49,7 @@ passport.use(
   new JwtStrategy(jwtAccessOptions, async (jwt_payload, done) => {
     try {
       if (!jwt_payload)
-        return done({ message: null, error: "Session Expired!" }, false);
+        return done(new Error({ message: null, error: "Invalid Token!" }), false);
       const user = await db[DB_TABLES.User].findOne({
         where: { userId: jwt_payload.userId },
         attributes: { exclude: ["password"] },
@@ -75,7 +75,7 @@ passport.use(
   new JwtStrategy(jwtRefreshOptions, async (jwt_payload, done) => {
     try {
       if (!jwt_payload)
-        return done({ message: null, error: "Session Expired!" }, false);
+        return done({ message: null, error: "Invalid Token!" }, false);
       const user = await db[DB_TABLES.User].findByPk(jwt_payload.userId);
       if (user) {
         return done(null, user);
@@ -105,5 +105,9 @@ passport.use(
     }
   })
 );
+
+const print = (data) => {
+  console.log(data);
+};
 
 module.exports = { passport };

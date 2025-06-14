@@ -5,9 +5,7 @@ const passportAuth = (strategy, options = {}) => {
   return (req, res, next) => {
     passport.authenticate(strategy, options, (err, user, info) => {
       try {
-        if (err) return next(new AppError(err?.message, 400));
-        if (!user)
-          return next(new AppError(info?.message || "Unauthorized", 404));
+        if (err || !user) return next(new AppError(info?.message || "Session Expired!", 401));
 
         req.user = user;
         next();

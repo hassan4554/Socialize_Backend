@@ -4,6 +4,7 @@ const {
   getAllPosts,
   deletePost,
   updatePost,
+  getSinglePost,
 } = require("@Controllers/Post");
 const passportAuth = require("@Utils/passport.utils");
 const { validateData, tempUpload } = require("@Middleware");
@@ -13,19 +14,24 @@ const {
   postUpdateValidationSchema,
 } = require("@Schema");
 
-
 router.post(
   "/create",
   passportAuth("jwt-access", { session: false }),
   createPost
 );
 
-
 router.get(
   "/getAllPosts",
   validateData(queryParamValidationSchema, "query"),
   passportAuth("jwt-access", { session: false }),
   getAllPosts
+);
+
+router.get(
+  "/get",
+  validateData(idValidationSchema, "query"),
+  passportAuth("jwt-access", { session: false }),
+  getSinglePost
 );
 
 router.patch(

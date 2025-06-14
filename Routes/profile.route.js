@@ -4,7 +4,8 @@ const {
   usernameValidationSchema,
   queryParamValidationSchema,
   profileUpdateValidationSchema,
-} = require("@Schema");
+  idValidationSchema,
+} = require("../Schema");
 const passportAuth = require("@Utils/passport.utils");
 const {
   createProfile,
@@ -22,7 +23,7 @@ router.post(
 
 router.get(
   "/get",
-  validateData(queryParamValidationSchema, "query"),
+  validateData(idValidationSchema, "query"),
   passportAuth("jwt-access", { session: false }),
   getProfile
 );

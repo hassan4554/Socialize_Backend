@@ -1,4 +1,4 @@
-const { createUser } = require("@Service/user.service");
+const { createUserTransaction } = require("@Service/user.service");
 const { findOrCreateProfile } = require("@Service/profile.service");
 const {
   AppError,
@@ -11,23 +11,19 @@ const {
 const signup = catchAsync(async (req, res, next) => {
   req.body.email = req.user.email;
   const userData = req.body;
-  const user = await createUser(userData);
 
-  if (!user) return next(new AppError("User already present", 400));
+  const result = await createUserTransaction(userData);
 
-  const [profile, created] = await findOrCreateProfile({
-    username: userData.username,
-    userId: user.userId,
-  });
-
-  if (!created) return next(new AppError("Profile already exists", 400));
+  if (!result.done) {
+    return next(new AppError(result.message, 400));
+  }
 
   const accessToken = generateAccessToken(
-    { userId: user.userId },
+    { userId: result.userId },
     process.env.ACCESS_TOKEN_EXPIRY
   );
   const refreshToken = generateRefreshToken(
-    { userId: user.userId },
+    { userId: result.userId },
     process.env.REFRESH_TOKEN_EXPIRY
   );
 

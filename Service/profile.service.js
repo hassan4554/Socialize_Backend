@@ -52,11 +52,13 @@ const deleteProfileData = async (profile) => {
   }
 };
 
-const update_profile = (updates, findParams, options = {}) => {
-  return db[DB_TABLES.Profile].update(updates, {
+const update_profile = async (updates, findParams, options = {}) => {
+  await db[DB_TABLES.Profile].update(updates, {
     where: findParams,
     ...options,
   });
+
+  return db[DB_TABLES.Profile].findOne({ where: findParams, ...options });
 };
 
 const get_profile = (findParams, options = {}) => {
@@ -72,5 +74,5 @@ module.exports = {
   delProfile,
   deleteProfileData,
   update_profile,
-  get_profile
+  get_profile,
 };

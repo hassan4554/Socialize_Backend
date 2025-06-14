@@ -17,11 +17,12 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "http://localhost:5173",
   })
 );
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/uploads", express.static("uploads"));
+app.use("/Posts", express.static("Posts"));
 app.use("/", routes);
 
 app.get("/ping", (req, res) => {

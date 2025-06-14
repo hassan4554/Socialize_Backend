@@ -2,6 +2,7 @@ const { AppError } = require("@Utils");
 
 const validateData = (validationSchema, dataType = "body") => {
   return (req, res, next) => {
+    console.log(req[dataType]);
     const { error } = validationSchema.validate(req[dataType], {
       abortEarly: true,
     });

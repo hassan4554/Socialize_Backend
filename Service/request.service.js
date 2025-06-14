@@ -9,8 +9,6 @@ const findOrCreateRequest = (findParam, options = {}) => {
 };
 
 const update_request = async (updates, findParams, options = {}) => {
-  console.log(updates);
-  console.log(findParams);
   await db[DB_TABLES.Request].update(updates, {
     where: findParams,
     ...options,
@@ -19,4 +17,8 @@ const update_request = async (updates, findParams, options = {}) => {
   return db[DB_TABLES.Request].findOne({ where: findParams, ...options });
 };
 
-module.exports = { findOrCreateRequest, update_request };
+const delete_request = (findParams, options = {}) => {
+  return db[DB_TABLES.Request].destroy({ where: findParams, ...options });
+};
+
+module.exports = { findOrCreateRequest, update_request, delete_request };

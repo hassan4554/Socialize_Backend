@@ -29,16 +29,18 @@ const followUser = catchAsync(async (req, res, next) => {
 
     return successResponse.sendData(res, {
       status: 200,
-      message: "Follow request sent",
+      message: "requested",
     });
   }
 
-  const [user, created] = await findOrCreateFriend(requesterId, receiverId);
+  const [user, created] = await findOrCreateFriend(requesterId, receiverId, {
+    paranoid: false,
+  });
 
   if (!created && user) return next(new AppError("Already followed", 400));
   successResponse.sendData(res, {
     status: 200,
-    message: "Followed successfully",
+    message: "following",
     data: user,
   });
 });

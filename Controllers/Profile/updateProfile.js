@@ -1,5 +1,6 @@
 const { catchAsync, successResponse, AppError } = require("@Utils");
-const { update_profile } = require("@Service/profile.service");
+const { update_profile } = require("../../Service/profile.service");
+const { findAllFriends } = require("../../Service/interactions.service");
 
 const updateProfile = catchAsync(async (req, res, next) => {
   const { username, profileId } = req.user.Profile;
@@ -28,17 +29,25 @@ const updateProfile = catchAsync(async (req, res, next) => {
   if (Object.keys(allowedUpdates).length === 0)
     return next(new AppError("No valid data provided for update", 400));
 
-  const [rowsUpdated, [updatedUser]] = await update_profile(
+  const updatedUser = await update_profile(
     allowedUpdates,
     { profileId },
     {
       attributes: { exclude: ["password"] },
-      returning: true,
-      individualHooks: true,
+      include: [{ model: db[DB_TABLES.Post] }],
     }
   );
 
   if (!updatedUser) return next(new AppError("User not found", 404));
+
+  const followers = await findAllFriends({ friendId: profileId });
+  const following = await findAllFriends({ userId: profileId });
+
+  updatedUser.dataValues.followers = followers;
+  updatedUser.dataValues.following = following;
+  updatedUser.dataValues.isFriend = true;
+  updatedUser.dataValues.ownAccount = true;
+
   return successResponse.sendData(res, {
     message: "Profile updated successfully",
     data: updatedUser,
