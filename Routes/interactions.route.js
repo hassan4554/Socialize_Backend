@@ -8,7 +8,7 @@ const {
 } = require("@Controllers/Interactions");
 
 const { validateData } = require("@Middleware");
-const { idValidationSchema, queryParamValidationSchema } = require("@Schema");
+const { idValidationSchema } = require("@Schema");
 
 router.post(
   "/follow",
@@ -19,14 +19,14 @@ router.post(
 
 router.get(
   "/get-following",
-  validateData(queryParamValidationSchema, "query"),
+  validateData(idValidationSchema, "query"),
   passportAuth("jwt-access", { session: false }),
   getFollowing
 );
 
 router.get(
   "/get-followers",
-  validateData(queryParamValidationSchema, "query"),
+  validateData(idValidationSchema, "query"),
   passportAuth("jwt-access", { session: false }),
   getFollowers
 );

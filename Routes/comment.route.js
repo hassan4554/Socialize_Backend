@@ -44,7 +44,7 @@ router.patch(
 
 router.delete(
   "/delete",
-  validateData(idValidationSchema),
+  validateData(idValidationSchema, "query"),
   passportAuth("jwt-access", { session: false }),
   deleteComment
 );

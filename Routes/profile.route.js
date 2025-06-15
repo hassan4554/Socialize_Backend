@@ -1,8 +1,7 @@
 const router = require("express").Router();
 const { validateData, upload } = require("@Middleware");
 const {
-  usernameValidationSchema,
-  queryParamValidationSchema,
+  createProfileValidationSchema,
   profileUpdateValidationSchema,
   idValidationSchema,
 } = require("../Schema");
@@ -16,7 +15,7 @@ const {
 
 router.post(
   "/create",
-  validateData(usernameValidationSchema),
+  validateData(createProfileValidationSchema),
   passportAuth("jwt-access", { session: false }),
   createProfile
 );

@@ -7,8 +7,7 @@ const updateComment = catchAsync(async (req, res, next) => {
 
   const updatedComment = await update_comment(
     { content },
-    { commentId, commentedBy },
-    { individualHooks: true }
+    { commentId, commentedBy }
   );
   if (!updatedComment) return next(new AppError("Error updating comment", 400));
 

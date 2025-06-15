@@ -3,12 +3,8 @@ const { DB_TABLES } = require("@Constants");
 const { tempUpload } = require("@Middleware");
 const { promisifyMulter } = require("@Utils");
 
-
 const create_post = (postData, options = {}) => {
-  return db[DB_TABLES.Post].create(
-    postData,
-    { ...options }
-  );
+  return db[DB_TABLES.Post].create(postData, { ...options });
 };
 
 const createPostTransaction = async (req, res, next) => {
@@ -24,13 +20,16 @@ const createPostTransaction = async (req, res, next) => {
       await update_post(req.body, { postId: post.postId }, { transaction: t });
 
       const attachments = await Promise.all(
-        req.files.map(element =>
-          db[DB_TABLES.Attachment].create({
-            parentId: post.postId,
-            size: element.size,
-            format: element.mimetype.split("/")[0],
-            url: `Posts${element.path.split("Posts")[1]}`,
-          }, { transaction: t })
+        req.files.map((element) =>
+          db[DB_TABLES.Attachment].create(
+            {
+              parentId: post.postId,
+              size: element.size,
+              format: element.mimetype.split("/")[0],
+              url: `Posts${element.path.split("Posts")[1]}`,
+            },
+            { transaction: t }
+          )
         )
       );
 

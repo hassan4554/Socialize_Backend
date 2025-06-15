@@ -1,6 +1,8 @@
 const { catchAsync, successResponse, AppError } = require("@Utils");
 const { update_profile } = require("../../Service/profile.service");
 const { findAllFriends } = require("../../Service/interactions.service");
+const {DB_TABLES} = require("@Constants");
+const db = require("@Models");
 
 const updateProfile = catchAsync(async (req, res, next) => {
   const { username, profileId } = req.user.Profile;

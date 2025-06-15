@@ -15,7 +15,7 @@ module.exports = (sequelize, { UUID, UUIDV4, BOOLEAN, STRING }) => {
     },
     profilePicture: {
       type: STRING,
-      defaultValue: "",
+      defaultValue: "/uploads/user-image-placeholder",
     },
     username: {
       type: STRING,

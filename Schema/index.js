@@ -11,6 +11,7 @@ const postUpdateValidationSchema = require("./postUpdateSchema.validation");
 const processReqValidationSchema = require("./processReqSchema.validation");
 const createCommentValidationSchema = require("./createCommentSchema.validation");
 const updateCommentValidationSchema = require("./updateCommentSchema.validation");
+const createProfileValidationSchema = require("./createProfileSchema.validation");
 
 module.exports = {
   passwordValidationSchema,
@@ -26,4 +27,5 @@ module.exports = {
   processReqValidationSchema,
   createCommentValidationSchema,
   updateCommentValidationSchema,
+  createProfileValidationSchema,
 };

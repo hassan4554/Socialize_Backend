@@ -3,16 +3,10 @@ const db = require("@Models");
 const path = require("path");
 const fs = require("fs").promises;
 
-const findOrCreateProfile = ({ username, userId }, options = {}) => {
+const findOrCreateProfile = (findParams, createParams, options = {}) => {
   return db[DB_TABLES.Profile].findOrCreate({
-    where: { username, userId },
-    ...options,
-  });
-};
-
-const getProfile = (findParams, options = {}) => {
-  return db[DB_TABLES.Profile].findOne({
     where: findParams,
+    defaults: createParams,
     ...options,
   });
 };
@@ -70,7 +64,6 @@ const get_profile = (findParams, options = {}) => {
 
 module.exports = {
   findOrCreateProfile,
-  getProfile,
   delProfile,
   deleteProfileData,
   update_profile,
